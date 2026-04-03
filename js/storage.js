@@ -29,17 +29,44 @@ const Storage = {
         localStorage.removeItem(this.PREFIX + key);
     },
 
+    // ========== Client Identity ==========
+    getClientId() {
+        let clientId = this.get('my_client_id');
+        if (!clientId) {
+            clientId = 'client-' + Date.now();
+            this.set('my_client_id', clientId);
+        }
+        return clientId;
+    },
+
+    getClientName() {
+        return this.get('my_client_name') || null;
+    },
+
+    setClientName(name) {
+        this.set('my_client_name', name);
+        // Register with chat system
+        ChatStorage.registerClient(this.getClientId(), name);
+    },
+
+    isRegistered() {
+        return !!this.get('my_client_name');
+    },
+
     // ========== Meals ==========
-    getMeals(clientId = 'client-1') {
+    getMeals(clientId) {
+        clientId = clientId || this.getClientId();
         const meals = this.get('meals') || [];
         return meals.filter(m => m.clientId === clientId);
     },
 
-    getMealsByDate(dateStr, clientId = 'client-1') {
+    getMealsByDate(dateStr, clientId) {
+        clientId = clientId || this.getClientId();
         return this.getMeals(clientId).filter(m => m.date === dateStr);
     },
 
-    getMealsForWeek(weekOffset = 0, clientId = 'client-1') {
+    getMealsForWeek(weekOffset = 0, clientId) {
+        clientId = clientId || this.getClientId();
         const dates = getWeekDates(weekOffset);
         const dateKeys = dates.map(d => d.date);
         return this.getMeals(clientId).filter(m => dateKeys.includes(m.date));
@@ -52,25 +79,27 @@ const Storage = {
         this.addNotification({
             type: 'meal_upload',
             clientId: meal.clientId,
-            mealId: meal.id,
-            message: `${SAMPLE_CLIENTS.find(c => c.id === meal.clientId)?.name || 'クライアント'}が${MEAL_TYPES[meal.type].label}をアップロードしました`,
+            message: `${this.getClientName() || 'クライアント'}が${MEAL_TYPES[meal.type].label}をアップロードしました`,
             timestamp: new Date().toISOString(),
             read: false
         });
     },
 
     // ========== Health Data ==========
-    getHealthData(clientId = 'client-1') {
+    getHealthData(clientId) {
+        clientId = clientId || this.getClientId();
         const data = this.get('healthData') || [];
         return data.filter(h => h.clientId === clientId);
     },
 
-    getHealthDataByDate(dateStr, clientId = 'client-1') {
+    getHealthDataByDate(dateStr, clientId) {
+        clientId = clientId || this.getClientId();
         const data = this.getHealthData(clientId);
         return data.find(h => h.date === dateStr) || null;
     },
 
-    getHealthDataForWeek(weekOffset = 0, clientId = 'client-1') {
+    getHealthDataForWeek(weekOffset = 0, clientId) {
+        clientId = clientId || this.getClientId();
         const dates = getWeekDates(weekOffset);
         const dateKeys = dates.map(d => d.date);
         return this.getHealthData(clientId).filter(h => dateKeys.includes(h.date));
@@ -88,7 +117,8 @@ const Storage = {
     },
 
     // ========== Feedback ==========
-    getFeedbacks(clientId = 'client-1') {
+    getFeedbacks(clientId) {
+        clientId = clientId || this.getClientId();
         const feedbacks = this.get('feedbacks') || [];
         return feedbacks.filter(f => f.clientId === clientId).sort((a, b) => b.date.localeCompare(a.date));
     },
@@ -107,7 +137,7 @@ const Storage = {
     addNotification(notification) {
         const notifications = this.get('notifications') || [];
         notifications.unshift({ ...notification, id: 'notif-' + Date.now() });
-        this.set('notifications', notifications.slice(0, 50)); // keep latest 50
+        this.set('notifications', notifications.slice(0, 50));
     },
 
     getUnreadCount() {
@@ -117,42 +147,5 @@ const Storage = {
     markAllRead() {
         const notifications = this.getNotifications().map(n => ({ ...n, read: true }));
         this.set('notifications', notifications);
-    },
-
-    // ========== Initialize with sample data ==========
-    initSampleData() {
-        if (this.get('initialized')) return;
-
-        const { meals, healthData } = generateSampleWeekData();
-        this.set('meals', meals);
-        this.set('healthData', healthData);
-        this.set('feedbacks', SAMPLE_FEEDBACKS);
-        this.set('notifications', [
-            {
-                id: 'notif-1',
-                type: 'meal_upload',
-                clientId: 'client-1',
-                message: '田中 美咲さんが昼食をアップロードしました',
-                timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
-                read: false
-            },
-            {
-                id: 'notif-2',
-                type: 'meal_upload',
-                clientId: 'client-1',
-                message: '田中 美咲さんが朝食をアップロードしました',
-                timestamp: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString(),
-                read: false
-            },
-            {
-                id: 'notif-3',
-                type: 'meal_upload',
-                clientId: 'client-2',
-                message: '佐藤 花子さんが夕食をアップロードしました',
-                timestamp: new Date(Date.now() - 8 * 60 * 60 * 1000).toISOString(),
-                read: true
-            }
-        ]);
-        this.set('initialized', true);
     }
 };
