@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 00 はじめに：詰まる7つの罠</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&family=Noto+Serif+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ---------- CSS変数（utage-embedスコープ内） ---------- */
+.utage-embed {
+  --c-bg: #FBF7F2;
+  --c-bg-soft: #F5EFE6;
+  --c-paper: #FFFFFF;
+  --c-text: #3A3530;
+  --c-text-soft: #6B6358;
+  --c-text-muted: #9A8F82;
+  --c-accent: #C28E6E;
+  --c-accent-deep: #A06F50;
+  --c-accent-soft: #F2DFD1;
+  --c-pink: #E8B7B0;
+  --c-pink-soft: #FBE9E5;
+  --c-mint: #A8C3B5;
+  --c-mint-soft: #DCE8E1;
+  --c-warn: #D9A441;
+  --c-warn-soft: #FAF1DC;
+  --c-line: #E8DFD2;
+  --shadow-sm: 0 2px 8px rgba(120, 90, 70, 0.06);
+  --shadow-md: 0 8px 24px rgba(120, 90, 70, 0.10);
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --font-jp: "Noto Sans JP", "Hiragino Sans", "Yu Gothic", sans-serif;
+  --font-serif: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif;
+
+  /* レイアウト・タイポグラフィの基準（body相当） */
+  font-family: var(--font-jp);
+  color: var(--c-text);
+  background: var(--c-bg);
+  line-height: 1.85;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "palt";
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+.utage-embed * { box-sizing: border-box; }
+
+/* ---------- セクション・見出し ---------- */
+.utage-embed .section { margin-top: 24px; }
+
+.utage-embed h2.chapter-title {
+  font-family: var(--font-serif);
+  font-size: 26px;
+  line-height: 1.5;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+  color: var(--c-text);
+  letter-spacing: 0.02em;
+}
+
+.utage-embed .chapter-num {
+  display: inline-block;
+  font-family: var(--font-serif);
+  font-size: 13px;
+  letter-spacing: 0.2em;
+  color: var(--c-accent-deep);
+  margin-bottom: 12px;
+}
+
+.utage-embed h3 {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  font-weight: 700;
+  margin: 48px 0 16px 0;
+  color: var(--c-text);
+  padding-left: 14px;
+  border-left: 3px solid var(--c-accent);
+}
+
+.utage-embed h4 {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 28px 0 10px 0;
+  color: var(--c-accent-deep);
+}
+
+.utage-embed p { margin: 0 0 16px 0; color: var(--c-text); }
+
+.utage-embed p.lead {
+  font-size: 17px;
+  color: var(--c-text-soft);
+  line-height: 1.9;
+  margin-bottom: 32px;
+}
+
+.utage-embed strong { color: var(--c-accent-deep); font-weight: 700; }
+.utage-embed em {
+  font-style: normal;
+  background: linear-gradient(transparent 65%, var(--c-pink-soft) 65%);
+  padding: 0 2px;
+}
+
+.utage-embed ul,
+.utage-embed ol { margin: 12px 0 20px 24px; padding: 0; }
+.utage-embed li { margin-bottom: 8px; line-height: 1.85; }
+.utage-embed a { color: var(--c-accent-deep); }
+
+/* ---------- Callout ---------- */
+.utage-embed .callout {
+  border-radius: var(--radius-md);
+  padding: 24px 28px;
+  margin: 28px 0;
+  position: relative;
+  border: 1px solid transparent;
+}
+
+.utage-embed .callout-label {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  padding: 4px 10px;
+  border-radius: 999px;
+  margin-bottom: 12px;
+}
+
+.utage-embed .stuck { background: var(--c-pink-soft); border-color: #F0CFC8; }
+.utage-embed .stuck .callout-label { background: var(--c-pink); color: #6B2A22; }
+.utage-embed .stuck h4 { color: #8B3A2E; margin-top: 8px; font-size: 17px; }
+.utage-embed .stuck .escape {
+  background: rgba(255,255,255,0.7);
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+  margin-top: 12px;
+}
+.utage-embed .stuck .escape::before {
+  content: "🌿 抜け方";
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--c-mint);
+  margin-bottom: 6px;
+  letter-spacing: 0.1em;
+}
+
+.utage-embed .todo-box { background: var(--c-mint-soft); border-color: #C5D6CA; }
+.utage-embed .todo-box .callout-label { background: var(--c-mint); color: #2F4A3D; }
+.utage-embed .todo-box ul { list-style: none; margin-left: 0; padding: 0; }
+.utage-embed .todo-box li { padding-left: 28px; position: relative; margin-bottom: 10px; }
+.utage-embed .todo-box li::before {
+  content: "☐";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 18px;
+  color: var(--c-mint);
+  font-weight: 700;
+}
+
+.utage-embed .tip { background: var(--c-warn-soft); border-color: #F0DFAF; }
+.utage-embed .tip .callout-label { background: var(--c-warn); color: #fff; }
+
+.utage-embed .template {
+  background: #F4F1EC;
+  border: 1px dashed var(--c-text-muted);
+}
+.utage-embed .template .callout-label { background: var(--c-text-soft); color: #fff; }
+.utage-embed .template pre {
+  white-space: pre-wrap;
+  font-family: var(--font-jp);
+  font-size: 14px;
+  line-height: 1.9;
+  color: var(--c-text);
+  padding: 12px 0 0;
+  margin: 0;
+}
+
+.utage-embed .cheer {
+  background: linear-gradient(135deg, #FBE9E5 0%, #F5EFE6 100%);
+  border: 1px solid var(--c-pink);
+  text-align: center;
+  padding: 32px 28px;
+  font-family: var(--font-serif);
+  font-size: 16px;
+  line-height: 2;
+  color: var(--c-text);
+}
+
+/* ---------- Step list ---------- */
+.utage-embed .steps {
+  counter-reset: step;
+  list-style: none;
+  margin-left: 0;
+  padding-left: 0;
+}
+.utage-embed .steps > li {
+  counter-increment: step;
+  background: var(--c-paper);
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius-md);
+  padding: 24px 28px 24px 72px;
+  margin-bottom: 16px;
+  position: relative;
+}
+.utage-embed .steps > li::before {
+  content: counter(step);
+  position: absolute;
+  left: 20px;
+  top: 22px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--c-accent);
+  color: #fff;
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.utage-embed .steps > li > strong:first-child {
+  display: block;
+  font-size: 17px;
+  margin-bottom: 6px;
+  color: var(--c-text);
+}
+
+/* ---------- Tables ---------- */
+.utage-embed table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 14px;
+  background: var(--c-paper);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+.utage-embed th,
+.utage-embed td {
+  padding: 12px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--c-line);
+}
+.utage-embed th {
+  background: var(--c-bg-soft);
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--c-accent-deep);
+  letter-spacing: 0.05em;
+}
+.utage-embed tr:last-child td { border-bottom: none; }
+
+/* ---------- Misc ---------- */
+.utage-embed .divider {
+  border: none;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--c-line), transparent);
+  margin: 56px 0;
+}
+
+.utage-embed .flow {
+  background: var(--c-paper);
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius-md);
+  padding: 28px;
+  margin: 28px 0;
+  text-align: center;
+  font-family: var(--font-serif);
+}
+.utage-embed .flow-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.utage-embed .flow-node {
+  background: var(--c-accent-soft);
+  border: 2px solid var(--c-accent);
+  border-radius: var(--radius-sm);
+  padding: 14px 20px;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--c-accent-deep);
+  min-width: 110px;
+}
+.utage-embed .flow-arrow { color: var(--c-accent); font-size: 20px; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 600px) {
+  .utage-embed { font-size: 15px; padding: 24px 16px 60px; }
+  .utage-embed h2.chapter-title { font-size: 22px; }
+  .utage-embed h3 { font-size: 18px; }
+  .utage-embed .steps > li { padding: 22px 22px 22px 64px; }
+  .utage-embed .steps > li::before { left: 16px; top: 22px; }
+  .utage-embed .callout { padding: 20px 22px; }
+}
+</style>
+</head>
+<body>
+<div class="utage-embed">
+
+  <section class="section">
+    <span class="chapter-num">CHAPTER 00 ／ Day 0</span>
+    <h2 class="chapter-title">はじめに：長子長女ママの<br>「ビジネスで詰まりやすい7つの罠」</h2>
+    <p class="lead">
+      最初に、性格論ではなく <strong>構造の話</strong> をします。<br>
+      長子長女さんが副業で詰まるのは、能力でも努力不足でもなく、<em>「ある思考パターン」がビジネスの初期と相性が悪いから</em>です。<br>
+      この章を読み終えるころには、自分がどこで詰まりやすいか、地図上に印がついた状態になります。
+    </p>
+
+    <h3>そもそも、なぜ長子長女ママは副業で詰まりやすいのか</h3>
+    <p>
+      長子長女さんには、ある共通の <strong>OS（思考のクセ）</strong> があります。これは小さい頃から「お姉ちゃんなんだから」「ちゃんとしなさい」と何度も言われた中でインストールされたもので、本来とても優秀なOSです。
+    </p>
+    <p>
+      ただし、このOSは <em>「答えがある世界」では最強</em> ですが、副業のような <em>「答えを自分で作る世界」では誤作動を起こしやすい</em> 。<br>
+      まずは、その誤作動パターンを7つ知ることから始めます。
+    </p>
+
+    <hr class="divider">
+
+    <h3>長子長女ママが詰まる7つの罠</h3>
+
+    <ol class="steps">
+      <li>
+        <strong>罠①：「ちゃんと準備してから」病</strong>
+        商品も、SNSも、LINEも、「全部完璧にしてからスタートしたい」気持ち。結果、3ヶ月たっても発信ゼロ、商品ゼロ。<br>
+        副業の0→1は、<em>準備しながら走る</em>のが原則です。完成品ではなく「足場」を作る感覚で進みます。
+      </li>
+      <li>
+        <strong>罠②：「お金をいただくのが申し訳ない」病</strong>
+        値段を決めようとすると、急に手が止まる。「これでお金を取っていいのかな」「私なんかが…」が口癖。<br>
+        これは <em>長子長女さんの最頻出の罠</em>。Chapter 1で、この罪悪感の正体と外し方を扱います。
+      </li>
+      <li>
+        <strong>罠③：「全部ひとりでやらなきゃ」病</strong>
+        わからないことを人に聞けない。検索しすぎて沼にはまる。情報を集めすぎて動けなくなる。<br>
+        このロードマップは、<em>「聞く」を「読む」で代替できる</em>ように作りました。手順通りに進めば、誰にも聞かずに0→1まで行けます。
+      </li>
+      <li>
+        <strong>罠④：「批判されたらどうしよう」病</strong>
+        投稿ボタンが押せない。SNSで顔も名前も出すのが怖い。「この投稿で誰かを傷つけたら」が頭をよぎる。<br>
+        Chapter 5で、<em>顔出しなし・本名なしでも信頼される発信</em> の作り方を扱います。
+      </li>
+      <li>
+        <strong>罠⑤：「他のママと比べてしまう」病</strong>
+        SNSを開くたび、すでに成功している誰かと自分を比べて落ち込む。「私には無理かも」が一日3回くる。<br>
+        比較は <em>燃料にも毒にもなる</em>。Chapter 8で、健全な比較と毒の比較の見分け方を扱います。
+      </li>
+      <li>
+        <strong>罠⑥：「家族にバレたら反対される」病</strong>
+        夫・親に黙って始める罪悪感。応援されない不安。<br>
+        この本では <em>家族に話すタイミングは「初販売の後」でOK</em> という方針を取ります。理由はChapter 1で。
+      </li>
+      <li>
+        <strong>罠⑦：「結果が出ないと意味がない」病</strong>
+        1週間で売れないと「向いてない」と思ってしまう。0→1の実態を知らないからこそのつまずき。<br>
+        副業の0→1は <em>平均30〜90日</em>。このロードマップは30日で達成する設計ですが、超えても焦らないでいい理由を最初に伝えておきます。
+      </li>
+    </ol>
+
+    <div class="callout stuck">
+      <span class="callout-label">💭 詰まりポイント</span>
+      <h4>「7つ全部当てはまった…私には無理ってこと？」</h4>
+      <p>むしろ <strong>逆です</strong>。7つ当てはまる人ほど、このロードマップが効きます。<br>長子長女さんの「ちゃんとやる力」は、正しい手順を渡されると <em>すさまじい推進力</em> に変わるからです。</p>
+      <div class="escape">
+        罠は <strong>欠点ではなく「OSの初期設定」</strong>。今日から、副業用のOSを別レイヤーでインストールしていきます。罠は消さなくていい、知っておくだけで十分です。
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <h3>このロードマップで作る「あなたの未来」</h3>
+
+    <p>30日後、あなたが手にしているもの：</p>
+    <ul>
+      <li>自分のことばで「私はこういう人の力になれる人です」と言える <strong>商品</strong></li>
+      <li>友達追加してくれる人がじわじわ増える <strong>公式LINE</strong></li>
+      <li>商品ページが整った <strong>BASEショップ</strong></li>
+      <li>毎日10分で続く <strong>Threadsの発信習慣</strong></li>
+      <li>そして何より、<em>「ご購入ありがとうございます」の一通目</em></li>
+    </ul>
+
+    <h3>30日のロードマップ（全体像）</h3>
+
+    <table>
+      <thead>
+        <tr><th>期間</th><th>章</th><th>やること</th><th>到達点</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Day 0</td><td>Ch.00</td><td>地図を読む（今ここ）</td><td>詰まる場所を知る</td></tr>
+        <tr><td>Day 1〜3</td><td>Ch.01</td><td>マインドのOS入れ替え</td><td>動ける自分になる</td></tr>
+        <tr><td>Day 4〜7</td><td>Ch.02</td><td>商品を1つ決める</td><td>売るものが決まる</td></tr>
+        <tr><td>Day 8〜10</td><td>Ch.03</td><td>公式LINEを開く</td><td>受け皿ができる</td></tr>
+        <tr><td>Day 11〜14</td><td>Ch.04</td><td>BASEショップを開く</td><td>レジができる</td></tr>
+        <tr><td>Day 15〜21</td><td>Ch.05</td><td>Threadsで発信開始</td><td>出会いの場ができる</td></tr>
+        <tr><td>Day 18〜21</td><td>Ch.06</td><td>動線をつなぐ</td><td>1本の道になる</td></tr>
+        <tr><td>Day 22〜30</td><td>Ch.07</td><td>先行案内→販売</td><td>0→1達成</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout tip">
+      <span class="callout-label">📌 大事な約束</span>
+      <p>
+        このロードマップは <strong>「書いてある順番にやる」だけ</strong> で機能します。<br>
+        「私だけ違う順序のほうがいいのでは」と考え始めたら、その思考自体が <em>罠①</em>。手順を信じて、手だけ動かしてください。
+      </p>
+    </div>
+
+    <div class="callout todo-box">
+      <span class="callout-label">✅ Day 0 のやることリスト</span>
+      <ul>
+        <li>このページをブックマーク（Day 1にすぐ戻れるように）</li>
+        <li>7つの罠の中で、自分に一番当てはまるものに丸をつける（メモアプリでOK）</li>
+        <li>30日後の手帳・カレンダーに <em>「初販売日（仮）」</em> と書き込む</li>
+        <li>Chapter 01へ進む（まだ進めなくてOK、明日でも大丈夫）</li>
+      </ul>
+    </div>
+
+    <div class="callout cheer">
+      あなたが今日この本を開いたこと、<br>
+      それ自体が、<strong>すでに罠①を破った証拠</strong>です。<br>
+      明日のDay 1で、待っています。
+    </div>
+
+  </section>
+
+  </div>
+
+</body>
+</html>

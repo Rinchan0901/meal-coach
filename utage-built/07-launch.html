@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 07 初販売編</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&family=Noto+Serif+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ---------- CSS変数（utage-embedスコープ内） ---------- */
+.utage-embed {
+  --c-bg: #FBF7F2;
+  --c-bg-soft: #F5EFE6;
+  --c-paper: #FFFFFF;
+  --c-text: #3A3530;
+  --c-text-soft: #6B6358;
+  --c-text-muted: #9A8F82;
+  --c-accent: #C28E6E;
+  --c-accent-deep: #A06F50;
+  --c-accent-soft: #F2DFD1;
+  --c-pink: #E8B7B0;
+  --c-pink-soft: #FBE9E5;
+  --c-mint: #A8C3B5;
+  --c-mint-soft: #DCE8E1;
+  --c-warn: #D9A441;
+  --c-warn-soft: #FAF1DC;
+  --c-line: #E8DFD2;
+  --shadow-sm: 0 2px 8px rgba(120, 90, 70, 0.06);
+  --shadow-md: 0 8px 24px rgba(120, 90, 70, 0.10);
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --font-jp: "Noto Sans JP", "Hiragino Sans", "Yu Gothic", sans-serif;
+  --font-serif: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif;
+
+  /* レイアウト・タイポグラフィの基準（body相当） */
+  font-family: var(--font-jp);
+  color: var(--c-text);
+  background: var(--c-bg);
+  line-height: 1.85;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "palt";
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+.utage-embed * { box-sizing: border-box; }
+
+/* ---------- セクション・見出し ---------- */
+.utage-embed .section { margin-top: 24px; }
+
+.utage-embed h2.chapter-title {
+  font-family: var(--font-serif);
+  font-size: 26px;
+  line-height: 1.5;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+  color: var(--c-text);
+  letter-spacing: 0.02em;
+}
+
+.utage-embed .chapter-num {
+  display: inline-block;
+  font-family: var(--font-serif);
+  font-size: 13px;
+  letter-spacing: 0.2em;
+  color: var(--c-accent-deep);
+  margin-bottom: 12px;
+}
+
+.utage-embed h3 {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  font-weight: 700;
+  margin: 48px 0 16px 0;
+  color: var(--c-text);
+  padding-left: 14px;
+  border-left: 3px solid var(--c-accent);
+}
+
+.utage-embed h4 {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 28px 0 10px 0;
+  color: var(--c-accent-deep);
+}
+
+.utage-embed p { margin: 0 0 16px 0; color: var(--c-text); }
+
+.utage-embed p.lead {
+  font-size: 17px;
+  color: var(--c-text-soft);
+  line-height: 1.9;
+  margin-bottom: 32px;
+}
+
+.utage-embed strong { color: var(--c-accent-deep); font-weight: 700; }
+.utage-embed em {
+  font-style: normal;
+  background: linear-gradient(transparent 65%, var(--c-pink-soft) 65%);
+  padding: 0 2px;
+}
+
+.utage-embed ul,
+.utage-embed ol { margin: 12px 0 20px 24px; padding: 0; }
+.utage-embed li { margin-bottom: 8px; line-height: 1.85; }
+.utage-embed a { color: var(--c-accent-deep); }
+
+/* ---------- Callout ---------- */
+.utage-embed .callout {
+  border-radius: var(--radius-md);
+  padding: 24px 28px;
+  margin: 28px 0;
+  position: relative;
+  border: 1px solid transparent;
+}
+
+.utage-embed .callout-label {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  padding: 4px 10px;
+  border-radius: 999px;
+  margin-bottom: 12px;
+}
+
+.utage-embed .stuck { background: var(--c-pink-soft); border-color: #F0CFC8; }
+.utage-embed .stuck .callout-label { background: var(--c-pink); color: #6B2A22; }
+.utage-embed .stuck h4 { color: #8B3A2E; margin-top: 8px; font-size: 17px; }
+.utage-embed .stuck .escape {
+  background: rgba(255,255,255,0.7);
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+  margin-top: 12px;
+}
+.utage-embed .stuck .escape::before {
+  content: "🌿 抜け方";
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--c-mint);
+  margin-bottom: 6px;
+  letter-spacing: 0.1em;
+}
+
+.utage-embed .todo-box { background: var(--c-mint-soft); border-color: #C5D6CA; }
+.utage-embed .todo-box .callout-label { background: var(--c-mint); color: #2F4A3D; }
+.utage-embed .todo-box ul { list-style: none; margin-left: 0; padding: 0; }
+.utage-embed .todo-box li { padding-left: 28px; position: relative; margin-bottom: 10px; }
+.utage-embed .todo-box li::before {
+  content: "☐";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 18px;
+  color: var(--c-mint);
+  font-weight: 700;
+}
+
+.utage-embed .tip { background: var(--c-warn-soft); border-color: #F0DFAF; }
+.utage-embed .tip .callout-label { background: var(--c-warn); color: #fff; }
+
+.utage-embed .template {
+  background: #F4F1EC;
+  border: 1px dashed var(--c-text-muted);
+}
+.utage-embed .template .callout-label { background: var(--c-text-soft); color: #fff; }
+.utage-embed .template pre {
+  white-space: pre-wrap;
+  font-family: var(--font-jp);
+  font-size: 14px;
+  line-height: 1.9;
+  color: var(--c-text);
+  padding: 12px 0 0;
+  margin: 0;
+}
+
+.utage-embed .cheer {
+  background: linear-gradient(135deg, #FBE9E5 0%, #F5EFE6 100%);
+  border: 1px solid var(--c-pink);
+  text-align: center;
+  padding: 32px 28px;
+  font-family: var(--font-serif);
+  font-size: 16px;
+  line-height: 2;
+  color: var(--c-text);
+}
+
+/* ---------- Step list ---------- */
+.utage-embed .steps {
+  counter-reset: step;
+  list-style: none;
+  margin-left: 0;
+  padding-left: 0;
+}
+.utage-embed .steps > li {
+  counter-increment: step;
+  background: var(--c-paper);
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius-md);
+  padding: 24px 28px 24px 72px;
+  margin-bottom: 16px;
+  position: relative;
+}
+.utage-embed .steps > li::before {
+  content: counter(step);
+  position: absolute;
+  left: 20px;
+  top: 22px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--c-accent);
+  color: #fff;
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.utage-embed .steps > li > strong:first-child {
+  display: block;
+  font-size: 17px;
+  margin-bottom: 6px;
+  color: var(--c-text);
+}
+
+/* ---------- Tables ---------- */
+.utage-embed table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 14px;
+  background: var(--c-paper);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+.utage-embed th,
+.utage-embed td {
+  padding: 12px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--c-line);
+}
+.utage-embed th {
+  background: var(--c-bg-soft);
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--c-accent-deep);
+  letter-spacing: 0.05em;
+}
+.utage-embed tr:last-child td { border-bottom: none; }
+
+/* ---------- Misc ---------- */
+.utage-embed .divider {
+  border: none;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--c-line), transparent);
+  margin: 56px 0;
+}
+
+.utage-embed .flow {
+  background: var(--c-paper);
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius-md);
+  padding: 28px;
+  margin: 28px 0;
+  text-align: center;
+  font-family: var(--font-serif);
+}
+.utage-embed .flow-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.utage-embed .flow-node {
+  background: var(--c-accent-soft);
+  border: 2px solid var(--c-accent);
+  border-radius: var(--radius-sm);
+  padding: 14px 20px;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--c-accent-deep);
+  min-width: 110px;
+}
+.utage-embed .flow-arrow { color: var(--c-accent); font-size: 20px; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 600px) {
+  .utage-embed { font-size: 15px; padding: 24px 16px 60px; }
+  .utage-embed h2.chapter-title { font-size: 22px; }
+  .utage-embed h3 { font-size: 18px; }
+  .utage-embed .steps > li { padding: 22px 22px 22px 64px; }
+  .utage-embed .steps > li::before { left: 16px; top: 22px; }
+  .utage-embed .callout { padding: 20px 22px; }
+}
+</style>
+</head>
+<body>
+<div class="utage-embed">
+
+  <section class="section">
+    <span class="chapter-num">CHAPTER 07 ／ Day 22〜30</span>
+    <h2 class="chapter-title">初販売編：<br>はじめての「ご購入ありがとうございます」を受け取る</h2>
+    <p class="lead">
+      ここからの9日間が <strong>0→1の本番</strong>。<br>
+      箱を作っただけでは売れません。お客様の背中をそっと押す <em>「先行案内」</em> という一手で、最初の1人が動きます。
+    </p>
+
+    <h3>初販売の本質：「人は知らない人からは買わない」</h3>
+
+    <p>
+      長子長女さんは「いい商品なら、勝手に売れるはず」と思いがち。<br>
+      でも現実は、<strong>「買わない理由」のほうが多い</strong>のです。
+    </p>
+    <ul>
+      <li>知らない人だから不安</li>
+      <li>本当に効果あるかわからない</li>
+      <li>失敗したら恥ずかしい</li>
+      <li>今すぐ必要じゃないかも</li>
+      <li>もっと安い／良いものがあるかも</li>
+    </ul>
+    <p>
+      これらの <strong>不安5個を1つずつ崩す</strong> のが先行案内の役目。9日間で順序立てて崩していきます。
+    </p>
+
+    <hr class="divider">
+
+    <h3>Day 22〜25：先行案内を「物語」で展開する</h3>
+
+    <p>
+      「明日販売します！」と1回告知してもほぼ売れません。<br>
+      <strong>4日間にわたる物語</strong>で、お客様の感情を動かしていきます。
+    </p>
+
+    <h4>4日間ストーリーローンチ・スケジュール</h4>
+    <table>
+      <thead><tr><th>Day</th><th>媒体</th><th>内容</th><th>狙い</th></tr></thead>
+      <tbody>
+        <tr><td>Day 22</td><td>Threads + LINE</td><td>「ある悩みについて、3年かけて見つけた答えがある」と予告</td><td>気を引く・期待を作る</td></tr>
+        <tr><td>Day 23</td><td>Threads + LINE</td><td>過去の失敗談・どん底の自分の話</td><td>共感・親近感</td></tr>
+        <tr><td>Day 24</td><td>Threads + LINE</td><td>「明日、その答えをまとめたものを公開します」予告</td><td>緊張感・楽しみ</td></tr>
+        <tr><td>Day 25</td><td>LINE中心</td><td>商品案内＋限定クーポン（48時間限定）</td><td>購入の決断</td></tr>
+        <tr><td>Day 26</td><td>LINE</td><td>「あと1日です」リマインド＋追加情報</td><td>後押し</td></tr>
+        <tr><td>Day 27</td><td>LINE</td><td>クーポン終了の告知＋「ご購入ありがとう」報告</td><td>FOMO（取り残される恐怖）の活用</td></tr>
+      </tbody>
+    </table>
+
+    <h4>Day 22 投稿テンプレ（予告編）</h4>
+    <div class="callout template">
+      <span class="callout-label">📝 予告投稿テンプレ</span>
+      <pre>
+3年前の私は、
+{ペルソナと同じ過去の悩み}
+
+何をやってもダメで、
+泣きながら検索していた夜を
+今でも覚えています。
+
+そこから3年、
+試行錯誤の末にたどり着いた答えを、
+今週、はじめて世に出します。
+
+詳細は、公式LINEでお伝えします。
+
+▶︎LINE登録はプロフィールから
+（{締切日}までの限定特典あり）
+
+あなたの{ペルソナの悩み}が、
+1日でも早く軽くなりますように🍃</pre>
+    </div>
+
+    <h4>Day 23 投稿テンプレ（共感編）</h4>
+    <div class="callout template">
+      <span class="callout-label">📝 共感投稿テンプレ</span>
+      <pre>
+昨日の続きです。
+
+3年前の私が、
+本当にどん底だった話。
+
+{エピソード5〜7行：具体的なシーン
+／その時の気持ち／何を試して
+何がダメだったか}
+
+「もうダメかもしれない」と
+思った夜があった。
+
+でも、ある日{転機の出来事}で、
+ぜんぶが変わりました。
+
+その変化のすべてを、
+明日、公開します。</pre>
+    </div>
+
+    <h4>Day 25 LINE配信テンプレ（販売開始）</h4>
+    <div class="callout template">
+      <span class="callout-label">📝 販売開始LINEテンプレ</span>
+      <pre>
+{ペルソナ呼びかけ}さん、こんばんは🌿
+
+3日間お読みいただき
+ありがとうございました。
+
+今日、ついに完成した
+{商品名}を公開します。
+
+▼商品ページ
+{BASEのURL}
+
+▼{締切日}までの限定特典
+✅ 公式LINE登録者さま限定
+   {YY}円OFFクーポン
+   コード：{COUPON_CODE}
+✅ ご購入特典
+   {追加特典PDF or 個別フォロー}
+
+—————
+
+「自分なんかに買えるかな」
+そんな声も聞こえる気がします。
+
+でも、思い出してください。
+3年前、{エピソード}で泣いていた、
+あの夜の自分のことを。
+
+このPDFは、
+あの時の自分に渡したくて作りました。
+
+—————
+
+▼今すぐ受け取る
+{BASEのURL}
+
+ご質問は、
+このトークから気軽に送ってくださいね🍃
+
+{ニックネーム}より</pre>
+    </div>
+
+    <hr class="divider">
+
+    <h3>Day 26〜27：購入の壁を崩す「個別1to1メッセージ」</h3>
+
+    <p>
+      これが <strong>初販売の決定打</strong>。長子長女さんは「売り込みっぽくて気が引ける」と思いがちですが、<em>1to1メッセージは売り込みではなく「気にかけ」</em> です。
+    </p>
+
+    <h4>誰に送るか</h4>
+    <p>
+      公式LINEに登録してくれたけれど、まだ購入していない人。特に：
+    </p>
+    <ul>
+      <li>過去にメッセージをくれた人</li>
+      <li>「気になる」「いつか試したい」と反応してくれた人</li>
+      <li>長く読んでくれている雰囲気の人（メッセージ既読が早い等）</li>
+    </ul>
+
+    <h4>1to1メッセージのテンプレ（売り込みに見えない型）</h4>
+    <div class="callout template">
+      <span class="callout-label">📝 1to1メッセージテンプレ</span>
+      <pre>
+{お名前 or トークの呼びかけ}さん、
+こんにちは🌿
+
+突然のメッセージ、失礼します。
+
+いつもLINEを読んでくださっているのを
+見るたびに、
+{ありがとうの気持ち}を感じています。
+
+もしご迷惑でなければ、
+1つだけお伝えしたくて。
+
+今回の{商品名}、
+{ペルソナの呼びかけ}さんの
+{過去にもらったお悩みやコメント}を
+思い浮かべながら作りました。
+
+クーポンの締切が明日{XX}時です。
+ご検討の参考まで🍃
+
+ご質問あれば、
+このトークでお答えしますね。
+押し売りではないので
+スルーしていただいても大丈夫です。
+
+{ニックネーム}</pre>
+    </div>
+
+    <div class="callout stuck">
+      <span class="callout-label">💭 詰まりポイント</span>
+      <h4>「個別メッセージ、ストーカーっぽくて怖い」</h4>
+      <p>
+        長子長女さんが必ず引っかかる罠。<br>
+        でも事実：<em>1to1メッセージで嫌がられる確率は1%以下</em>。むしろ「個別に気にかけてもらえて嬉しい」と感じる人のほうが圧倒的に多い。<br>
+        押し売りに見えないコツは、<strong>「スルーして大丈夫です」を必ず添える</strong>こと。
+      </p>
+      <div class="escape">
+        合言葉：「<strong>気にかけ＝サービスの一部</strong>」<br>
+        知らない人がいきなり個別案内するのは違和感だけど、LINEに登録してくれている時点で <em>関係はもう始まっている</em>。優しく一声かけるのは、ビジネスとして当然の作法。
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <h3>Day 28：はじめての「ご購入ありがとうございます」</h3>
+
+    <p>
+      この通知が来た瞬間、まず手を止めて、<strong>深呼吸してください</strong>。<br>
+      長子長女さんは「ちゃんとお礼しなきゃ」と即座に長文を返したくなりますが、その前に <em>5分だけ自分のために</em> 時間を取ります。
+    </p>
+
+    <div class="callout cheer">
+      最初のお客様は、<br>
+      <strong>あなたの人生で一生忘れない人</strong>になります。<br>
+      その瞬間を、ちゃんと味わってから、<br>
+      返信を書いてください。
+    </div>
+
+    <h4>初購入のお客様に送る「お礼メッセージ」テンプレ</h4>
+    <div class="callout template">
+      <span class="callout-label">📝 初購入お礼テンプレ（LINE）</span>
+      <pre>
+{お名前}さん、
+
+{商品名}をご購入いただき、
+本当にありがとうございます🌿
+
+実は、{お名前}さんのご購入が、
+私にとっての{この商品の}初めてのご購入です。
+
+ずっとずっと、
+{ペルソナ}の方の役に立ちたくて、
+3年かけて作ってきたものでした。
+
+それを最初に手に取ってくださったこと、
+一生忘れません。
+
+—————
+
+PDFの感想や、
+読んで「ここがわからない」など、
+このトークで気軽にお聞かせください。
+
+ご感想を直接お聞きできるのが、
+私のいちばんの励みです。
+
+—————
+
+これからも、よろしくお願いします🍃
+
+{ニックネーム}</pre>
+    </div>
+
+    <hr class="divider">
+
+    <h3>Day 29：お客様の声をいただく「タイミング設計」</h3>
+
+    <p>
+      初購入のお客様から「お客様の声」をいただけると、Day 30以降の販売が <strong>5倍ラク</strong> になります。<br>
+      ただし、タイミングを間違えると断られます。
+    </p>
+
+    <h4>声をもらうベストタイミング</h4>
+    <ul>
+      <li>購入直後：早すぎる（まだ読んでない）</li>
+      <li>購入1週間後：早い（試行錯誤中）</li>
+      <li><strong>購入2〜4週間後：ベスト</strong>（実際の効果を実感した頃）</li>
+      <li>2ヶ月以上後：忘れ去られている可能性</li>
+    </ul>
+
+    <h4>お客様の声の依頼テンプレ</h4>
+    <div class="callout template">
+      <span class="callout-label">📝 お客様の声依頼テンプレ</span>
+      <pre>
+{お名前}さん、こんにちは🌿
+
+{商品名}をご購入いただいてから
+{X}週間が経ちましたが、
+お試しいただけましたか？
+
+もし少しでも
+お役に立てたところがあれば、
+2〜3行のご感想を
+このトークでお聞かせいただけたら
+とても嬉しいです。
+
+▼お聞きしたいこと（ご無理のない範囲で）
+①購入前のお悩み
+②使ってみての変化
+③同じ悩みの方におすすめする一言
+
+ご感想は{お名前}さんの許可をいただいて、
+お声として紹介させていただくこともあります
+（匿名でも、お顔出しなしでも大丈夫です）。
+
+ご無理なくお返事くださいね🍃
+
+{ニックネーム}</pre>
+    </div>
+
+    <div class="callout tip">
+      <span class="callout-label">📌 ハードルの下げ方</span>
+      <p>
+        「2〜3行でOK」「匿名でOK」「ご無理なく」を必ず添える。<br>
+        長子長女さん同士は <em>「ちゃんとした感想を書かなきゃ」</em>と気負うので、ハードルを下げないと回答率が下がります。
+      </p>
+    </div>
+
+    <hr class="divider">
+
+    <h3>Day 30：振り返り＆次の一手</h3>
+
+    <p>
+      30日間、本当におつかれさまでした。<br>
+      0→1が達成できた人も、まだ1人目が決まっていない人も、ここで <strong>必ず振り返り</strong> をします。
+    </p>
+
+    <h4>30日後の振り返りシート</h4>
+    <div class="callout template">
+      <span class="callout-label">📝 振り返りシート</span>
+      <pre>
+1. 30日前の自分と比べて、変わったことを5つ書く
+
+2. 数字の振り返り
+   - Threadsフォロワー数：{X}
+   - 公式LINE登録者数：{X}
+   - 商品ページ閲覧数：{X}
+   - 販売数：{X}件
+   - 売上：{X}円
+
+3. 1番うまくいったこと（1つだけ）
+
+4. 1番うまくいかなかったこと（1つだけ）
+
+5. 次の30日でやること（3つ）</pre>
+    </div>
+
+    <h4>0→1がまだなら、こうする</h4>
+    <ol>
+      <li><strong>商品ではなく、認知を疑う</strong>：そもそも商品ページに見に来ている人が10人未満なら、Threads発信を増やす</li>
+      <li><strong>商品の見せ方を変える</strong>：商品ページの最初の3行（キャッチコピー）を書き直す</li>
+      <li><strong>1to1メッセージを送る相手を増やす</strong>：5人→15人に拡大</li>
+      <li><strong>価格ではなく価値を伝え直す</strong>：値段を下げるのは最後の手段</li>
+    </ol>
+
+    <h4>0→1達成したら、こうする</h4>
+    <ol>
+      <li><strong>お客様の声をいただく</strong>（Day 29のテンプレ）</li>
+      <li><strong>声を商品ページに反映</strong>（信頼度が劇的に上がる）</li>
+      <li><strong>2人目・3人目を狙う</strong>（同じ動線を回し続ける）</li>
+      <li><strong>1→10のフェーズへ</strong>（次の章で扱える内容ですが、本ロードマップは0→1までで完結）</li>
+    </ol>
+
+    <div class="callout stuck">
+      <span class="callout-label">💭 詰まりポイント</span>
+      <h4>「30日経ったのに売れなかった…向いてないかも」</h4>
+      <p>
+        この感情、長子長女さんには必ず来ます。でも事実：<strong>0→1の平均期間は60〜90日</strong>。<br>
+        30日で達成する人もいますが、それ以上かかるのが <em>普通</em>。30日で売れなかったから「向いてない」と判断するのは早すぎます。
+      </p>
+      <div class="escape">
+        30日でやめる人 → 90日後にも何もない<br>
+        90日続ける人 → ほぼ全員が0→1を達成する<br>
+        違いは、能力ではなく <strong>「あと60日を続けるかどうか」</strong> だけ。<br>
+        Day 31からは、Chapter 5〜7をぐるぐる回す日々。それで十分。
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="callout todo-box">
+      <span class="callout-label">✅ Day 22〜30 のやることリスト</span>
+      <ul>
+        <li>Day 22：予告投稿（Threads+LINE）</li>
+        <li>Day 23：共感ストーリー投稿</li>
+        <li>Day 24：販売前日告知＋クーポンコード作成（BASEのクーポンApp）</li>
+        <li>Day 25：販売開始LINE配信＋Threads投稿</li>
+        <li>Day 26：リマインドLINE配信</li>
+        <li>Day 26〜27：1to1メッセージを5〜10人に送る</li>
+        <li>Day 27：クーポン終了告知＋途中経過報告</li>
+        <li>初購入が来たら：お礼メッセージ即送信（テンプレベース）</li>
+        <li>Day 30：振り返りシートを記入</li>
+      </ul>
+    </div>
+
+    <div class="callout cheer">
+      この本のロードマップは、ここで終わります。<br>
+      でも、あなたのビジネスは <strong>ここから始まります</strong>。<br>
+      初販売の通知が鳴る日まで、私はずっと、<br>
+      このページの中で待っています。<br>
+      <br>
+      <em>あなたなら、必ず大丈夫です。</em>
+    </div>
+
+  </section>
+
+  </div>
+
+</body>
+</html>

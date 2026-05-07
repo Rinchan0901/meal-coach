@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 01 マインドセット編</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&family=Noto+Serif+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ---------- CSS変数（utage-embedスコープ内） ---------- */
+.utage-embed {
+  --c-bg: #FBF7F2;
+  --c-bg-soft: #F5EFE6;
+  --c-paper: #FFFFFF;
+  --c-text: #3A3530;
+  --c-text-soft: #6B6358;
+  --c-text-muted: #9A8F82;
+  --c-accent: #C28E6E;
+  --c-accent-deep: #A06F50;
+  --c-accent-soft: #F2DFD1;
+  --c-pink: #E8B7B0;
+  --c-pink-soft: #FBE9E5;
+  --c-mint: #A8C3B5;
+  --c-mint-soft: #DCE8E1;
+  --c-warn: #D9A441;
+  --c-warn-soft: #FAF1DC;
+  --c-line: #E8DFD2;
+  --shadow-sm: 0 2px 8px rgba(120, 90, 70, 0.06);
+  --shadow-md: 0 8px 24px rgba(120, 90, 70, 0.10);
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --font-jp: "Noto Sans JP", "Hiragino Sans", "Yu Gothic", sans-serif;
+  --font-serif: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif;
+
+  /* レイアウト・タイポグラフィの基準（body相当） */
+  font-family: var(--font-jp);
+  color: var(--c-text);
+  background: var(--c-bg);
+  line-height: 1.85;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "palt";
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+.utage-embed * { box-sizing: border-box; }
+
+/* ---------- セクション・見出し ---------- */
+.utage-embed .section { margin-top: 24px; }
+
+.utage-embed h2.chapter-title {
+  font-family: var(--font-serif);
+  font-size: 26px;
+  line-height: 1.5;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+  color: var(--c-text);
+  letter-spacing: 0.02em;
+}
+
+.utage-embed .chapter-num {
+  display: inline-block;
+  font-family: var(--font-serif);
+  font-size: 13px;
+  letter-spacing: 0.2em;
+  color: var(--c-accent-deep);
+  margin-bottom: 12px;
+}
+
+.utage-embed h3 {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  font-weight: 700;
+  margin: 48px 0 16px 0;
+  color: var(--c-text);
+  padding-left: 14px;
+  border-left: 3px solid var(--c-accent);
+}
+
+.utage-embed h4 {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 28px 0 10px 0;
+  color: var(--c-accent-deep);
+}
+
+.utage-embed p { margin: 0 0 16px 0; color: var(--c-text); }
+
+.utage-embed p.lead {
+  font-size: 17px;
+  color: var(--c-text-soft);
+  line-height: 1.9;
+  margin-bottom: 32px;
+}
+
+.utage-embed strong { color: var(--c-accent-deep); font-weight: 700; }
+.utage-embed em {
+  font-style: normal;
+  background: linear-gradient(transparent 65%, var(--c-pink-soft) 65%);
+  padding: 0 2px;
+}
+
+.utage-embed ul,
+.utage-embed ol { margin: 12px 0 20px 24px; padding: 0; }
+.utage-embed li { margin-bottom: 8px; line-height: 1.85; }
+.utage-embed a { color: var(--c-accent-deep); }
+
+/* ---------- Callout ---------- */
+.utage-embed .callout {
+  border-radius: var(--radius-md);
+  padding: 24px 28px;
+  margin: 28px 0;
+  position: relative;
+  border: 1px solid transparent;
+}
+
+.utage-embed .callout-label {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  padding: 4px 10px;
+  border-radius: 999px;
+  margin-bottom: 12px;
+}
+
+.utage-embed .stuck { background: var(--c-pink-soft); border-color: #F0CFC8; }
+.utage-embed .stuck .callout-label { background: var(--c-pink); color: #6B2A22; }
+.utage-embed .stuck h4 { color: #8B3A2E; margin-top: 8px; font-size: 17px; }
+.utage-embed .stuck .escape {
+  background: rgba(255,255,255,0.7);
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+  margin-top: 12px;
+}
+.utage-embed .stuck .escape::before {
+  content: "🌿 抜け方";
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--c-mint);
+  margin-bottom: 6px;
+  letter-spacing: 0.1em;
+}
+
+.utage-embed .todo-box { background: var(--c-mint-soft); border-color: #C5D6CA; }
+.utage-embed .todo-box .callout-label { background: var(--c-mint); color: #2F4A3D; }
+.utage-embed .todo-box ul { list-style: none; margin-left: 0; padding: 0; }
+.utage-embed .todo-box li { padding-left: 28px; position: relative; margin-bottom: 10px; }
+.utage-embed .todo-box li::before {
+  content: "☐";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 18px;
+  color: var(--c-mint);
+  font-weight: 700;
+}
+
+.utage-embed .tip { background: var(--c-warn-soft); border-color: #F0DFAF; }
+.utage-embed .tip .callout-label { background: var(--c-warn); color: #fff; }
+
+.utage-embed .template {
+  background: #F4F1EC;
+  border: 1px dashed var(--c-text-muted);
+}
+.utage-embed .template .callout-label { background: var(--c-text-soft); color: #fff; }
+.utage-embed .template pre {
+  white-space: pre-wrap;
+  font-family: var(--font-jp);
+  font-size: 14px;
+  line-height: 1.9;
+  color: var(--c-text);
+  padding: 12px 0 0;
+  margin: 0;
+}
+
+.utage-embed .cheer {
+  background: linear-gradient(135deg, #FBE9E5 0%, #F5EFE6 100%);
+  border: 1px solid var(--c-pink);
+  text-align: center;
+  padding: 32px 28px;
+  font-family: var(--font-serif);
+  font-size: 16px;
+  line-height: 2;
+  color: var(--c-text);
+}
+
+/* ---------- Step list ---------- */
+.utage-embed .steps {
+  counter-reset: step;
+  list-style: none;
+  margin-left: 0;
+  padding-left: 0;
+}
+.utage-embed .steps > li {
+  counter-increment: step;
+  background: var(--c-paper);
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius-md);
+  padding: 24px 28px 24px 72px;
+  margin-bottom: 16px;
+  position: relative;
+}
+.utage-embed .steps > li::before {
+  content: counter(step);
+  position: absolute;
+  left: 20px;
+  top: 22px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--c-accent);
+  color: #fff;
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.utage-embed .steps > li > strong:first-child {
+  display: block;
+  font-size: 17px;
+  margin-bottom: 6px;
+  color: var(--c-text);
+}
+
+/* ---------- Tables ---------- */
+.utage-embed table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 14px;
+  background: var(--c-paper);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+.utage-embed th,
+.utage-embed td {
+  padding: 12px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--c-line);
+}
+.utage-embed th {
+  background: var(--c-bg-soft);
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--c-accent-deep);
+  letter-spacing: 0.05em;
+}
+.utage-embed tr:last-child td { border-bottom: none; }
+
+/* ---------- Misc ---------- */
+.utage-embed .divider {
+  border: none;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--c-line), transparent);
+  margin: 56px 0;
+}
+
+.utage-embed .flow {
+  background: var(--c-paper);
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius-md);
+  padding: 28px;
+  margin: 28px 0;
+  text-align: center;
+  font-family: var(--font-serif);
+}
+.utage-embed .flow-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.utage-embed .flow-node {
+  background: var(--c-accent-soft);
+  border: 2px solid var(--c-accent);
+  border-radius: var(--radius-sm);
+  padding: 14px 20px;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--c-accent-deep);
+  min-width: 110px;
+}
+.utage-embed .flow-arrow { color: var(--c-accent); font-size: 20px; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 600px) {
+  .utage-embed { font-size: 15px; padding: 24px 16px 60px; }
+  .utage-embed h2.chapter-title { font-size: 22px; }
+  .utage-embed h3 { font-size: 18px; }
+  .utage-embed .steps > li { padding: 22px 22px 22px 64px; }
+  .utage-embed .steps > li::before { left: 16px; top: 22px; }
+  .utage-embed .callout { padding: 20px 22px; }
+}
+</style>
+</head>
+<body>
+<div class="utage-embed">
+
+  <section class="section">
+    <span class="chapter-num">CHAPTER 01 ／ Day 1〜3</span>
+    <h2 class="chapter-title">マインドセット編：<br>完璧主義を「完了主義」にスライドする</h2>
+    <p class="lead">
+      Chapter 1は <strong>3日間</strong>。手は動かさなくていい、考え方の <em>OS入れ替え</em> だけをやります。<br>
+      ここを飛ばすとChapter 2以降で必ず詰まります。長子長女ママほど、ここに3日かける価値があります。
+    </p>
+
+    <h3>Day 1：完璧主義を「完了主義」にスライドする</h3>
+
+    <p>
+      長子長女さんに最初にお願いしたいのは、たった一つの言葉の入れ替えです。
+    </p>
+
+    <div class="callout cheer">
+      「<em>ちゃんとやろう</em>」を、<br>
+      「<strong>今日のぶん、終わらせよう</strong>」に。
+    </div>
+
+    <p>
+      完璧主義は <em>結果のクオリティ</em> にこだわります。<br>
+      完了主義は <em>今日の進捗</em> にこだわります。
+    </p>
+    <p>
+      副業の0→1で求められるのは、後者です。なぜなら、<strong>動かないと何もデータが取れない</strong>から。市場（お客様）の反応がない状態で「ちゃんと」を磨いても、的の見えない暗闇でダーツを投げているのと同じです。
+    </p>
+
+    <h4>具体的なスライド方法（書き換え一覧）</h4>
+    <table>
+      <thead><tr><th>完璧主義の声</th><th>完了主義への書き換え</th></tr></thead>
+      <tbody>
+        <tr><td>もっと勉強してから出そう</td><td>今ある知識でDay 7までに1つ作る</td></tr>
+        <tr><td>商品が完璧になってから売ろう</td><td>未完成でも売って、声をもらって直す</td></tr>
+        <tr><td>プロフィールを完璧に作りたい</td><td>3行書いたら公開、3日後に直す</td></tr>
+        <tr><td>誤字がないか何度も見直そう</td><td>1回読んで投稿、誤字は後で直せる</td></tr>
+        <tr><td>もっと自信がついてから発信しよう</td><td>自信は発信した後にしかつかない</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout stuck">
+      <span class="callout-label">💭 詰まりポイント</span>
+      <h4>「中途半端なものを世に出すのが、本当に怖い」</h4>
+      <p>
+        わかります。長子長女さんは「お姉ちゃんなんだから雑なことしないで」と育っているので、<strong>雑＝悪</strong>と感じる回路が深い。<br>
+        でも事実として、<em>世に出ている商品の99%は中途半端です</em>。Appleのスマホも、毎年「未完成」のまま発売しています。
+      </p>
+      <div class="escape">
+        合言葉：「<strong>未完成は失礼じゃない、放置こそ失礼</strong>」<br>
+        出してから直す人は、磨いてから出さない人より <em>10倍速く</em> 上達します。
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <h3>Day 2：「お金をいただく罪悪感」の正体を知る</h3>
+
+    <p>
+      長子長女さんが価格を決めるとき、必ず通る関所があります。
+    </p>
+    <p>
+      「<em>こんな私が、お金を取ってもいいのかな</em>」<br>
+      「<em>無料で出したほうが喜ばれるのでは</em>」<br>
+      「<em>5,000円なんて高い気がする</em>」
+    </p>
+    <p>
+      これは <strong>謙虚さではなく、思考のクセ</strong> です。正体を分解します。
+    </p>
+
+    <h4>罪悪感の3つの正体</h4>
+    <ol>
+      <li><strong>「役に立てる自信がない」</strong> → 自信は経験で育つ。最初は誰も自信がない。</li>
+      <li><strong>「親や家族に怒られそう」</strong> → 子どもの頃、お小遣いをもらう時の気持ちが残っている。今のあなたは事業者。</li>
+      <li><strong>「無料で愛されたい」</strong> → これが一番深い。<em>お金を介在させると関係が変わる気がする</em>恐怖。</li>
+    </ol>
+
+    <div class="callout tip">
+      <span class="callout-label">📌 価格の本質</span>
+      <p>
+        価格とは <strong>「責任の重さ」</strong> です。<br>
+        無料だとお客様は適当に消費します。お金を払うと、お客様は本気で取り組みます。<br>
+        つまり、<em>適切に価格をつけることは、お客様の本気を引き出すサービス</em>でもあります。
+      </p>
+    </div>
+
+    <h4>書き換えワーク（紙に書いてください）</h4>
+    <div class="callout template">
+      <span class="callout-label">📝 ワーク</span>
+      <pre>
+1. 私が「お金をいただくのは申し訳ない」と感じる場面を3つ書く
+2. その場面で、お客様は本当に「申し訳なく感じてほしい」と思っている？
+3. もし親友が同じことで悩んでいたら、なんと声をかける？
+4. その言葉を、自分にも使う。</pre>
+    </div>
+
+    <div class="callout stuck">
+      <span class="callout-label">💭 詰まりポイント</span>
+      <h4>「3,000円もいただいて、ガッカリされたらどうしよう」</h4>
+      <p>
+        ガッカリされる前提で <em>返金保証</em> をつければ解決します。商品ページに「ご満足いただけなければ全額返金します」と書く。<br>
+        実は、返金保証をつけても返金される確率は <strong>1%以下</strong> 。あなたが思うほど、人は怒っていません。
+      </p>
+      <div class="escape">
+        「申し訳ない」の反対は「傲慢」ではなく <strong>「ありがとう」</strong>。<br>
+        お金をもらったら、申し訳ながらず、まっすぐ「ありがとうございます」と言える練習を、Day 2の宿題に。
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <h3>Day 3：続けられる時間設計（1日30分でも進む方法）</h3>
+
+    <p>
+      ママの最大のリソース不足は <strong>時間</strong> です。長子長女さんはここでも罠にはまりがち：「<em>1日2時間取れる日まで本気を出そう</em>」と先送りしてしまう。
+    </p>
+    <p>
+      残念ながら、<strong>1日2時間取れる日は来ません</strong>。子どもが大きくなれば別の用事が増えるだけ。<br>
+      解決策は逆。<em>「1日30分でも進む設計」</em> に変えます。
+    </p>
+
+    <h4>30分でできるタスクの分解（このロードマップの設計）</h4>
+    <table>
+      <thead><tr><th>30分単位のタスク例</th><th>所要日数</th></tr></thead>
+      <tbody>
+        <tr><td>商品コンセプトを1行で書く</td><td>1日</td></tr>
+        <tr><td>BASEのアカウント開設・初期設定</td><td>2日</td></tr>
+        <tr><td>商品ページの「悩み」セクションを書く</td><td>1日</td></tr>
+        <tr><td>公式LINEのあいさつメッセージを書く</td><td>1日</td></tr>
+        <tr><td>Threadsプロフィールを書く</td><td>1日</td></tr>
+        <tr><td>Threads投稿を1つ書く</td><td>30分／毎日</td></tr>
+      </tbody>
+    </table>
+
+    <h4>「ママタイム」の確保方法</h4>
+    <ol>
+      <li><strong>朝の15分＋夜の15分に分ける</strong>（連続30分が取れない人向け）</li>
+      <li><strong>子どものお昼寝中は副業時間と決める</strong>（家事は後回しでOK）</li>
+      <li><strong>スマホでできるタスクから消化</strong>（Threads投稿・LINE設定はスマホ完結）</li>
+      <li><strong>「やらない日」を週1で確保</strong>（罪悪感ループに入る前に休む）</li>
+    </ol>
+
+    <div class="callout stuck">
+      <span class="callout-label">💭 詰まりポイント</span>
+      <h4>「家族にバレたくない、でも時間が取れない」</h4>
+      <p>
+        Chapter 0でも触れましたが、この本では <strong>「家族に話すのは初販売の後」</strong> をおすすめしています。<br>
+        理由は、長子長女さんは <em>「反対される前に賛成されたい」</em> 心理が強く、相談すると相手の反応に振り回されて動けなくなるから。
+      </p>
+      <div class="escape">
+        実績ゼロで相談する → 反対されやすい<br>
+        実績1（初販売）を持って報告する → 応援されやすい<br>
+        この順序を覚えておくと、家族との関係も守れます。
+      </div>
+    </div>
+
+    <h4>続けられる人のたった1つの習慣</h4>
+    <p>
+      モチベーションは <em>あてにしない</em> 。代わりに、<strong>「同じ時間・同じ場所・同じトリガー」</strong> でやることを決めます。
+    </p>
+    <div class="callout template">
+      <span class="callout-label">📝 If-Thenプランニング</span>
+      <pre>
+「もし___（トリガー）したら、___（アクション）する」
+
+例：
+- もし朝、子どもが起きる前に目が覚めたら、Threadsを1つ投稿する
+- もし夜、子どもが寝たら、ロードマップを1セクション読む
+- もし金曜の夜になったら、その週の進捗をスマホメモに書く</pre>
+    </div>
+
+    <hr class="divider">
+
+    <div class="callout todo-box">
+      <span class="callout-label">✅ Day 1〜3 のやることリスト</span>
+      <ul>
+        <li>Day 1：完璧主義の書き換え表を見ながら、自分の口グセを1つ書き換える</li>
+        <li>Day 2：罪悪感ワーク（4つの質問）を紙に書く</li>
+        <li>Day 2：「ありがとうございます」を声に出して10回言う（恥ずかしくても）</li>
+        <li>Day 3：If-Thenプランを最低1つ決める</li>
+        <li>Day 3：30日カレンダーに「副業30分」のブロックを入れる</li>
+        <li>Day 3が終わったらChapter 02へ</li>
+      </ul>
+    </div>
+
+    <div class="callout cheer">
+      準備ができたかどうかは、<br>
+      <strong>気分</strong>ではなく<strong>カレンダー</strong>が決めます。<br>
+      3日たったら、気持ちはまだ準備中でも、<br>
+      Chapter 2のページを開いてください。
+    </div>
+
+  </section>
+
+  </div>
+
+</body>
+</html>

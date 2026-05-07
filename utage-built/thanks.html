@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ご購入ありがとうございます｜0→1ロードマップブック</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&family=Noto+Serif+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ---------- CSS変数（utage-embedスコープ内） ---------- */
+.utage-embed {
+  --c-bg: #FBF7F2;
+  --c-bg-soft: #F5EFE6;
+  --c-paper: #FFFFFF;
+  --c-text: #3A3530;
+  --c-text-soft: #6B6358;
+  --c-text-muted: #9A8F82;
+  --c-accent: #C28E6E;
+  --c-accent-deep: #A06F50;
+  --c-accent-soft: #F2DFD1;
+  --c-pink: #E8B7B0;
+  --c-pink-soft: #FBE9E5;
+  --c-mint: #A8C3B5;
+  --c-mint-soft: #DCE8E1;
+  --c-warn: #D9A441;
+  --c-warn-soft: #FAF1DC;
+  --c-line: #E8DFD2;
+  --shadow-sm: 0 2px 8px rgba(120, 90, 70, 0.06);
+  --shadow-md: 0 8px 24px rgba(120, 90, 70, 0.10);
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --font-jp: "Noto Sans JP", "Hiragino Sans", "Yu Gothic", sans-serif;
+  --font-serif: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif;
+
+  /* レイアウト・タイポグラフィの基準（body相当） */
+  font-family: var(--font-jp);
+  color: var(--c-text);
+  background: var(--c-bg);
+  line-height: 1.85;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "palt";
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+.utage-embed * { box-sizing: border-box; }
+
+/* ---------- セクション・見出し ---------- */
+.utage-embed .section { margin-top: 24px; }
+
+.utage-embed h2.chapter-title {
+  font-family: var(--font-serif);
+  font-size: 26px;
+  line-height: 1.5;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+  color: var(--c-text);
+  letter-spacing: 0.02em;
+}
+
+.utage-embed .chapter-num {
+  display: inline-block;
+  font-family: var(--font-serif);
+  font-size: 13px;
+  letter-spacing: 0.2em;
+  color: var(--c-accent-deep);
+  margin-bottom: 12px;
+}
+
+.utage-embed h3 {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  font-weight: 700;
+  margin: 48px 0 16px 0;
+  color: var(--c-text);
+  padding-left: 14px;
+  border-left: 3px solid var(--c-accent);
+}
+
+.utage-embed h4 {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 28px 0 10px 0;
+  color: var(--c-accent-deep);
+}
+
+.utage-embed p { margin: 0 0 16px 0; color: var(--c-text); }
+
+.utage-embed p.lead {
+  font-size: 17px;
+  color: var(--c-text-soft);
+  line-height: 1.9;
+  margin-bottom: 32px;
+}
+
+.utage-embed strong { color: var(--c-accent-deep); font-weight: 700; }
+.utage-embed em {
+  font-style: normal;
+  background: linear-gradient(transparent 65%, var(--c-pink-soft) 65%);
+  padding: 0 2px;
+}
+
+.utage-embed ul,
+.utage-embed ol { margin: 12px 0 20px 24px; padding: 0; }
+.utage-embed li { margin-bottom: 8px; line-height: 1.85; }
+.utage-embed a { color: var(--c-accent-deep); }
+
+/* ---------- Callout ---------- */
+.utage-embed .callout {
+  border-radius: var(--radius-md);
+  padding: 24px 28px;
+  margin: 28px 0;
+  position: relative;
+  border: 1px solid transparent;
+}
+
+.utage-embed .callout-label {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  padding: 4px 10px;
+  border-radius: 999px;
+  margin-bottom: 12px;
+}
+
+.utage-embed .stuck { background: var(--c-pink-soft); border-color: #F0CFC8; }
+.utage-embed .stuck .callout-label { background: var(--c-pink); color: #6B2A22; }
+.utage-embed .stuck h4 { color: #8B3A2E; margin-top: 8px; font-size: 17px; }
+.utage-embed .stuck .escape {
+  background: rgba(255,255,255,0.7);
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+  margin-top: 12px;
+}
+.utage-embed .stuck .escape::before {
+  content: "🌿 抜け方";
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--c-mint);
+  margin-bottom: 6px;
+  letter-spacing: 0.1em;
+}
+
+.utage-embed .todo-box { background: var(--c-mint-soft); border-color: #C5D6CA; }
+.utage-embed .todo-box .callout-label { background: var(--c-mint); color: #2F4A3D; }
+.utage-embed .todo-box ul { list-style: none; margin-left: 0; padding: 0; }
+.utage-embed .todo-box li { padding-left: 28px; position: relative; margin-bottom: 10px; }
+.utage-embed .todo-box li::before {
+  content: "☐";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 18px;
+  color: var(--c-mint);
+  font-weight: 700;
+}
+
+.utage-embed .tip { background: var(--c-warn-soft); border-color: #F0DFAF; }
+.utage-embed .tip .callout-label { background: var(--c-warn); color: #fff; }
+
+.utage-embed .template {
+  background: #F4F1EC;
+  border: 1px dashed var(--c-text-muted);
+}
+.utage-embed .template .callout-label { background: var(--c-text-soft); color: #fff; }
+.utage-embed .template pre {
+  white-space: pre-wrap;
+  font-family: var(--font-jp);
+  font-size: 14px;
+  line-height: 1.9;
+  color: var(--c-text);
+  padding: 12px 0 0;
+  margin: 0;
+}
+
+.utage-embed .cheer {
+  background: linear-gradient(135deg, #FBE9E5 0%, #F5EFE6 100%);
+  border: 1px solid var(--c-pink);
+  text-align: center;
+  padding: 32px 28px;
+  font-family: var(--font-serif);
+  font-size: 16px;
+  line-height: 2;
+  color: var(--c-text);
+}
+
+/* ---------- Step list ---------- */
+.utage-embed .steps {
+  counter-reset: step;
+  list-style: none;
+  margin-left: 0;
+  padding-left: 0;
+}
+.utage-embed .steps > li {
+  counter-increment: step;
+  background: var(--c-paper);
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius-md);
+  padding: 24px 28px 24px 72px;
+  margin-bottom: 16px;
+  position: relative;
+}
+.utage-embed .steps > li::before {
+  content: counter(step);
+  position: absolute;
+  left: 20px;
+  top: 22px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--c-accent);
+  color: #fff;
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.utage-embed .steps > li > strong:first-child {
+  display: block;
+  font-size: 17px;
+  margin-bottom: 6px;
+  color: var(--c-text);
+}
+
+/* ---------- Tables ---------- */
+.utage-embed table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 14px;
+  background: var(--c-paper);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+.utage-embed th,
+.utage-embed td {
+  padding: 12px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--c-line);
+}
+.utage-embed th {
+  background: var(--c-bg-soft);
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--c-accent-deep);
+  letter-spacing: 0.05em;
+}
+.utage-embed tr:last-child td { border-bottom: none; }
+
+/* ---------- Misc ---------- */
+.utage-embed .divider {
+  border: none;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--c-line), transparent);
+  margin: 56px 0;
+}
+
+.utage-embed .flow {
+  background: var(--c-paper);
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius-md);
+  padding: 28px;
+  margin: 28px 0;
+  text-align: center;
+  font-family: var(--font-serif);
+}
+.utage-embed .flow-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.utage-embed .flow-node {
+  background: var(--c-accent-soft);
+  border: 2px solid var(--c-accent);
+  border-radius: var(--radius-sm);
+  padding: 14px 20px;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--c-accent-deep);
+  min-width: 110px;
+}
+.utage-embed .flow-arrow { color: var(--c-accent); font-size: 20px; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 600px) {
+  .utage-embed { font-size: 15px; padding: 24px 16px 60px; }
+  .utage-embed h2.chapter-title { font-size: 22px; }
+  .utage-embed h3 { font-size: 18px; }
+  .utage-embed .steps > li { padding: 22px 22px 22px 64px; }
+  .utage-embed .steps > li::before { left: 16px; top: 22px; }
+  .utage-embed .callout { padding: 20px 22px; }
+}
+</style>
+</head>
+<body>
+<!--
+============================================================
+サンクスページ（決済完了後に表示）
+UTAGEのファネル「サンクスページ」のカスタムHTMLブロックに貼る。
+============================================================
+-->
+
+<div class="utage-embed">
+
+  <section class="section" style="text-align:center; padding: 40px 0 20px;">
+    <span class="chapter-num">THANK YOU</span>
+    <h2 class="chapter-title">
+      ご購入、<br>
+      ありがとうございます🌿
+    </h2>
+    <p class="lead" style="text-align:left; margin-top:32px;">
+      本日この本を選んでくださったこと、<br>
+      <strong>あなたの30日間が、今日から始まります</strong>。<br>
+      最初のページから順番に開いてみてください。
+    </p>
+  </section>
+
+  <div class="callout cheer">
+    完璧じゃなくても、<br>
+    <strong>今日のぶん、ひとつだけ進める</strong>。<br>
+    それがこの本の、たったひとつのルールです。
+  </div>
+
+  <section class="section">
+    <h3>これからの流れ</h3>
+
+    <ol class="steps">
+      <li>
+        <strong>会員サイトにログインしてください</strong>
+        ご登録メールアドレスに、会員サイトのご招待メールをお送りしています。<br>
+        メールが届かない場合は、迷惑メールフォルダもご確認ください。
+      </li>
+      <li>
+        <strong>Chapter 00 から順番に読み進める</strong>
+        全9章。1日1章ペースで30日。Day 0の今日は、Chapter 00だけでOKです。
+      </li>
+      <li>
+        <strong>公式LINEを友だち追加</strong>
+        サポートと、追加の特典をお届けします。下のボタンから登録してください。
+      </li>
+    </ol>
+
+    <div style="text-align:center; margin: 40px 0;">
+      <!-- ▼UTAGEのLINE連携URL or 公式LINE登録URLに置換 ▼ -->
+      <a href="#LINE_FRIEND_URL" class="cta-button">公式LINEを友だち追加 →</a>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="section">
+    <h3>ご購入特典のご案内</h3>
+
+    <div class="callout tip">
+      <span class="callout-label">🎁 ご購入特典</span>
+      <ul>
+        <li><strong>商品ページ7ブロックテンプレ（PDF版）</strong>：そのまま埋めるだけで売れる商品ページが完成</li>
+        <li><strong>Threads投稿5型・1ヶ月ぶんのテンプレ集</strong>：Day 1〜30で使える投稿例を1ヶ月ぶん収録</li>
+        <li><strong>LINEあいさつメッセージ5パターン</strong>：あなたのテーマに近い文体を選ぶだけ</li>
+      </ul>
+      <p>※特典の受け取りは、公式LINEで「<strong>購入済</strong>」と送ってください。</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="section" style="text-align:center;">
+    <h3 style="border:none; padding:0;">最後に、ひとこと</h3>
+    <p class="lead" style="margin-top:24px;">
+      長子長女ママが副業の0→1で詰まるのは、<br>
+      性格のせいでも、能力のせいでも、ありません。<br>
+      <strong>「迷わない手順」と「やめない仕組み」</strong>が無いだけ。<br>
+      <br>
+      この本で、その両方を、ぜんぶ手渡します。<br>
+      <br>
+      <em>あなたの30日後の景色を、楽しみにしています。</em>
+    </p>
+  </section>
+
+  <section class="section" style="text-align:center; padding-top: 40px;">
+    <a href="#MEMBER_SITE_URL" class="cta-button">会員サイトへ進む →</a>
+  </section>
+
+</div>
+
+<style>
+.utage-embed .cta-button {
+  display: inline-block;
+  background: var(--c-accent);
+  color: #fff;
+  text-decoration: none;
+  font-family: var(--font-serif);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 18px 48px;
+  border-radius: 999px;
+  box-shadow: 0 6px 20px rgba(192, 142, 110, 0.35);
+  transition: all 0.2s;
+}
+.utage-embed .cta-button:hover {
+  background: var(--c-accent-deep);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(192, 142, 110, 0.45);
+}
+</style>
+</body>
+</html>

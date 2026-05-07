@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 05 Threads集客編</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&family=Noto+Serif+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ---------- CSS変数（utage-embedスコープ内） ---------- */
+.utage-embed {
+  --c-bg: #FBF7F2;
+  --c-bg-soft: #F5EFE6;
+  --c-paper: #FFFFFF;
+  --c-text: #3A3530;
+  --c-text-soft: #6B6358;
+  --c-text-muted: #9A8F82;
+  --c-accent: #C28E6E;
+  --c-accent-deep: #A06F50;
+  --c-accent-soft: #F2DFD1;
+  --c-pink: #E8B7B0;
+  --c-pink-soft: #FBE9E5;
+  --c-mint: #A8C3B5;
+  --c-mint-soft: #DCE8E1;
+  --c-warn: #D9A441;
+  --c-warn-soft: #FAF1DC;
+  --c-line: #E8DFD2;
+  --shadow-sm: 0 2px 8px rgba(120, 90, 70, 0.06);
+  --shadow-md: 0 8px 24px rgba(120, 90, 70, 0.10);
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --font-jp: "Noto Sans JP", "Hiragino Sans", "Yu Gothic", sans-serif;
+  --font-serif: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif;
+
+  /* レイアウト・タイポグラフィの基準（body相当） */
+  font-family: var(--font-jp);
+  color: var(--c-text);
+  background: var(--c-bg);
+  line-height: 1.85;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "palt";
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+.utage-embed * { box-sizing: border-box; }
+
+/* ---------- セクション・見出し ---------- */
+.utage-embed .section { margin-top: 24px; }
+
+.utage-embed h2.chapter-title {
+  font-family: var(--font-serif);
+  font-size: 26px;
+  line-height: 1.5;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+  color: var(--c-text);
+  letter-spacing: 0.02em;
+}
+
+.utage-embed .chapter-num {
+  display: inline-block;
+  font-family: var(--font-serif);
+  font-size: 13px;
+  letter-spacing: 0.2em;
+  color: var(--c-accent-deep);
+  margin-bottom: 12px;
+}
+
+.utage-embed h3 {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  font-weight: 700;
+  margin: 48px 0 16px 0;
+  color: var(--c-text);
+  padding-left: 14px;
+  border-left: 3px solid var(--c-accent);
+}
+
+.utage-embed h4 {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 28px 0 10px 0;
+  color: var(--c-accent-deep);
+}
+
+.utage-embed p { margin: 0 0 16px 0; color: var(--c-text); }
+
+.utage-embed p.lead {
+  font-size: 17px;
+  color: var(--c-text-soft);
+  line-height: 1.9;
+  margin-bottom: 32px;
+}
+
+.utage-embed strong { color: var(--c-accent-deep); font-weight: 700; }
+.utage-embed em {
+  font-style: normal;
+  background: linear-gradient(transparent 65%, var(--c-pink-soft) 65%);
+  padding: 0 2px;
+}
+
+.utage-embed ul,
+.utage-embed ol { margin: 12px 0 20px 24px; padding: 0; }
+.utage-embed li { margin-bottom: 8px; line-height: 1.85; }
+.utage-embed a { color: var(--c-accent-deep); }
+
+/* ---------- Callout ---------- */
+.utage-embed .callout {
+  border-radius: var(--radius-md);
+  padding: 24px 28px;
+  margin: 28px 0;
+  position: relative;
+  border: 1px solid transparent;
+}
+
+.utage-embed .callout-label {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  padding: 4px 10px;
+  border-radius: 999px;
+  margin-bottom: 12px;
+}
+
+.utage-embed .stuck { background: var(--c-pink-soft); border-color: #F0CFC8; }
+.utage-embed .stuck .callout-label { background: var(--c-pink); color: #6B2A22; }
+.utage-embed .stuck h4 { color: #8B3A2E; margin-top: 8px; font-size: 17px; }
+.utage-embed .stuck .escape {
+  background: rgba(255,255,255,0.7);
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+  margin-top: 12px;
+}
+.utage-embed .stuck .escape::before {
+  content: "🌿 抜け方";
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--c-mint);
+  margin-bottom: 6px;
+  letter-spacing: 0.1em;
+}
+
+.utage-embed .todo-box { background: var(--c-mint-soft); border-color: #C5D6CA; }
+.utage-embed .todo-box .callout-label { background: var(--c-mint); color: #2F4A3D; }
+.utage-embed .todo-box ul { list-style: none; margin-left: 0; padding: 0; }
+.utage-embed .todo-box li { padding-left: 28px; position: relative; margin-bottom: 10px; }
+.utage-embed .todo-box li::before {
+  content: "☐";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 18px;
+  color: var(--c-mint);
+  font-weight: 700;
+}
+
+.utage-embed .tip { background: var(--c-warn-soft); border-color: #F0DFAF; }
+.utage-embed .tip .callout-label { background: var(--c-warn); color: #fff; }
+
+.utage-embed .template {
+  background: #F4F1EC;
+  border: 1px dashed var(--c-text-muted);
+}
+.utage-embed .template .callout-label { background: var(--c-text-soft); color: #fff; }
+.utage-embed .template pre {
+  white-space: pre-wrap;
+  font-family: var(--font-jp);
+  font-size: 14px;
+  line-height: 1.9;
+  color: var(--c-text);
+  padding: 12px 0 0;
+  margin: 0;
+}
+
+.utage-embed .cheer {
+  background: linear-gradient(135deg, #FBE9E5 0%, #F5EFE6 100%);
+  border: 1px solid var(--c-pink);
+  text-align: center;
+  padding: 32px 28px;
+  font-family: var(--font-serif);
+  font-size: 16px;
+  line-height: 2;
+  color: var(--c-text);
+}
+
+/* ---------- Step list ---------- */
+.utage-embed .steps {
+  counter-reset: step;
+  list-style: none;
+  margin-left: 0;
+  padding-left: 0;
+}
+.utage-embed .steps > li {
+  counter-increment: step;
+  background: var(--c-paper);
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius-md);
+  padding: 24px 28px 24px 72px;
+  margin-bottom: 16px;
+  position: relative;
+}
+.utage-embed .steps > li::before {
+  content: counter(step);
+  position: absolute;
+  left: 20px;
+  top: 22px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--c-accent);
+  color: #fff;
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.utage-embed .steps > li > strong:first-child {
+  display: block;
+  font-size: 17px;
+  margin-bottom: 6px;
+  color: var(--c-text);
+}
+
+/* ---------- Tables ---------- */
+.utage-embed table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 14px;
+  background: var(--c-paper);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+.utage-embed th,
+.utage-embed td {
+  padding: 12px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--c-line);
+}
+.utage-embed th {
+  background: var(--c-bg-soft);
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--c-accent-deep);
+  letter-spacing: 0.05em;
+}
+.utage-embed tr:last-child td { border-bottom: none; }
+
+/* ---------- Misc ---------- */
+.utage-embed .divider {
+  border: none;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--c-line), transparent);
+  margin: 56px 0;
+}
+
+.utage-embed .flow {
+  background: var(--c-paper);
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius-md);
+  padding: 28px;
+  margin: 28px 0;
+  text-align: center;
+  font-family: var(--font-serif);
+}
+.utage-embed .flow-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.utage-embed .flow-node {
+  background: var(--c-accent-soft);
+  border: 2px solid var(--c-accent);
+  border-radius: var(--radius-sm);
+  padding: 14px 20px;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--c-accent-deep);
+  min-width: 110px;
+}
+.utage-embed .flow-arrow { color: var(--c-accent); font-size: 20px; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 600px) {
+  .utage-embed { font-size: 15px; padding: 24px 16px 60px; }
+  .utage-embed h2.chapter-title { font-size: 22px; }
+  .utage-embed h3 { font-size: 18px; }
+  .utage-embed .steps > li { padding: 22px 22px 22px 64px; }
+  .utage-embed .steps > li::before { left: 16px; top: 22px; }
+  .utage-embed .callout { padding: 20px 22px; }
+}
+</style>
+</head>
+<body>
+<div class="utage-embed">
+
+  <section class="section">
+    <span class="chapter-num">CHAPTER 05 ／ Day 15〜21</span>
+    <h2 class="chapter-title">Threads集客編：<br>1日10分の発信で、ファンが育つ仕組み</h2>
+    <p class="lead">
+      Threadsは、いま <strong>初心者ママの最大のチャンス媒体</strong>。<br>
+      Instagramよりライト・Twitterより安心・<em>テキスト中心で顔出し不要</em>。1日10分の発信で、確実にファンは育ちます。
+    </p>
+
+    <h3>なぜThreadsか？（初心者ママに最適な3つの理由）</h3>
+    <ol>
+      <li><strong>テキスト主体</strong>：写真も動画も不要。文字だけで戦える。</li>
+      <li><strong>アルゴリズムが優しい</strong>：フォロワー0でも発見されやすい設計。Instagramの数倍リーチが伸びる。</li>
+      <li><strong>1投稿の負担が軽い</strong>：500文字以内・1〜2分で書ける。隙間時間に最適。</li>
+    </ol>
+
+    <hr class="divider">
+
+    <h3>Day 15：Threadsプロフィールを「3秒で伝わる」に整える</h3>
+
+    <p>
+      投稿を見た人がプロフィールに飛んできた時、<strong>3秒以内</strong> に「この人は何の人か」がわからないと去ります。<br>
+      長子長女さんがやりがちなのは「ちゃんと自己紹介を書きたい」と長文を入れてしまうこと。<em>正解はその逆</em>。
+    </p>
+
+    <h4>プロフィール構成テンプレ</h4>
+    <div class="callout template">
+      <span class="callout-label">📝 Threadsプロフィールテンプレ</span>
+      <pre>
+【名前欄】
+{ニックネーム}｜{何の人か}（10〜15字）
+
+例：
+あさみ｜離乳食ラクするコーチ
+まりこ｜副業ロードマップ案内人
+さき｜長子長女ママの味方
+
+【自己紹介（150字以内）】
+1行目：誰のために発信しているか
+   ▶ 「{ペルソナ}のための{テーマ}」
+2行目：あなたの実績や経験
+   ▶ 「元{職業}／{年数}育児中／{経験}」
+3行目：このアカウントで発信していること
+   ▶ 「{頻度}で{内容}を発信中」
+4行目：オファー（公式LINEへの誘導）
+   ▶ 「🎁無料プレゼント受付中→プロフ下のリンク」
+
+【リンク欄】
+公式LINEのURL（友だち追加URL）</pre>
+    </div>
+
+    <div class="callout tip">
+      <span class="callout-label">📌 アイコン＆ヘッダー</span>
+      <p>
+        アイコン：丸く切り抜いた似顔絵 or 顔写真の一部（口元のみなど）。Canvaの「アバター作成」も◎<br>
+        ヘッダーは Threadsには無いので、アイコンが命。<em>背景色はくすみ系</em>がおすすめ（センスが伝わる）。
+      </p>
+    </div>
+
+    <hr class="divider">
+
+    <h3>Day 16：伸びる投稿の「5つの型」</h3>
+
+    <p>
+      毎日投稿のテーマで詰まらないように、<strong>5つの型を順番に回す</strong>のが最強です。<br>
+      長子長女さんは「毎回オリジナルを書かなきゃ」と思いがちですが、<em>型がないことがいちばん詰まる原因</em>。
+    </p>
+
+    <h4>型①：気づき型（朝の投稿に最適）</h4>
+    <div class="callout template">
+      <span class="callout-label">📝 気づき型テンプレ</span>
+      <pre>
+{ペルソナ}が陥りがちな勘違い。
+
+「{勘違い}」
+→ 実は{真実}
+
+私も{過去の自分}でした。
+{気づきのきっかけ1〜2行}
+
+今日も{呼びかけ}🌿</pre>
+    </div>
+
+    <h4>型②：失敗談型（共感を呼ぶ）</h4>
+    <div class="callout template">
+      <span class="callout-label">📝 失敗談型テンプレ</span>
+      <pre>
+昔の私の大失敗の話。
+
+{失敗のシーン1〜2行}
+{その時の気持ち1行}
+
+その経験から学んだのは、
+{学び}ということ。
+
+同じ失敗、しなくていい人が
+1人でも増えますように。</pre>
+    </div>
+
+    <h4>型③：ノウハウ型（保存される）</h4>
+    <div class="callout template">
+      <span class="callout-label">📝 ノウハウ型テンプレ</span>
+      <pre>
+{ペルソナ}が今すぐできる、
+{テーマ}のコツ3つ。
+
+①{コツ1}
+②{コツ2}
+③{コツ3}
+
+特に③は{補足}。
+試してみてね🍃</pre>
+    </div>
+
+    <h4>型④：問いかけ型（コメントが集まる）</h4>
+    <div class="callout template">
+      <span class="callout-label">📝 問いかけ型テンプレ</span>
+      <pre>
+{ペルソナ}に質問。
+
+{シチュエーション}の時、
+あなたはどっち派？
+
+A. {選択肢A}
+B. {選択肢B}
+
+私はBで、理由は{1行}。
+コメントで教えて🌿</pre>
+    </div>
+
+    <h4>型⑤：応援型（ファンが定着する）</h4>
+    <div class="callout template">
+      <span class="callout-label">📝 応援型テンプレ</span>
+      <pre>
+今日もがんばってる
+{ペルソナ}のあなたへ。
+
+{労いの言葉1〜2行}
+{具体的なシーン}
+
+{呼びかけ：今日はもう休もう／○○していい etc.}
+
+明日もここで会えますように🍃</pre>
+    </div>
+
+    <h4>1週間の投稿スケジュール例</h4>
+    <table>
+      <thead><tr><th>曜日</th><th>型</th><th>狙い</th></tr></thead>
+      <tbody>
+        <tr><td>月</td><td>気づき型</td><td>週はじめの目線合わせ</td></tr>
+        <tr><td>火</td><td>ノウハウ型</td><td>保存・シェアを狙う</td></tr>
+        <tr><td>水</td><td>失敗談型</td><td>共感とフォロー獲得</td></tr>
+        <tr><td>木</td><td>問いかけ型</td><td>コメントを増やす</td></tr>
+        <tr><td>金</td><td>ノウハウ型</td><td>週末前にギフト</td></tr>
+        <tr><td>土</td><td>応援型</td><td>ファン化</td></tr>
+        <tr><td>日</td><td>応援型 or 休み</td><td>休む日も◎</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout stuck">
+      <span class="callout-label">💭 詰まりポイント</span>
+      <h4>「投稿が思いつかない、書いては消すを繰り返す」</h4>
+      <p>
+        長子長女さんの「100点で出したい病」発動。<br>
+        正解は <em>「未来の自分が直す前提で、6割で出す」</em>。<br>
+        書いて10分以上悩んだら、その投稿は <strong>下書きに保存して翌日推敲</strong>。今日のぶんは型のテンプレに沿って機械的に書く。
+      </p>
+      <div class="escape">
+        スマホのメモアプリに「投稿ストック」フォルダを作る。<br>
+        思いついた時にメモしておけば、書く瞬間ゼロから書かなくていい。<em>ストックは盾</em>。
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <h3>Day 17：フォロワー0からの伸ばし方</h3>
+
+    <h4>初期に絶対やる5つの行動</h4>
+    <ol>
+      <li><strong>同じテーマで発信している人を50人フォロー</strong>（リサーチ＋繋がり目的）</li>
+      <li><strong>その人の投稿に「具体的な感想コメント」を1日5件</strong>（「いい記事ですね」はNG。「この一文が刺さりました」と中身に触れる）</li>
+      <li><strong>1日1投稿を最低3週間続ける</strong>（アルゴリズムに認識される最低ライン）</li>
+      <li><strong>反応がよかった投稿の「型」を分析</strong>（伸びるタイプを見つける）</li>
+      <li><strong>自分の投稿のリプ欄に補足コメントを自分でつける</strong>（情報追加で滞在時間UP）</li>
+    </ol>
+
+    <h4>投稿時間のおすすめ</h4>
+    <p>
+      ママペルソナ向けの最強時間帯：
+    </p>
+    <ul>
+      <li><strong>朝 7:00〜8:30</strong>（通勤・ご飯準備中の閲覧）</li>
+      <li><strong>昼 12:00〜13:00</strong>（ランチ中・お昼寝中）</li>
+      <li><strong>夜 21:00〜23:00</strong>（寝かしつけ後の自分時間）</li>
+    </ul>
+    <p>
+      初心者ママは <em>夜21時固定</em> が最もブレずに続きます。
+    </p>
+
+    <div class="callout stuck">
+      <span class="callout-label">💭 詰まりポイント</span>
+      <h4>「いいねが0だと心が折れそう」</h4>
+      <p>
+        最初の30投稿は <strong>「土壌づくり」</strong>。データを集めるための種まきの期間です。<br>
+        いいね数で一喜一憂すると、長子長女さんは <em>「私には才能がない」</em> と早すぎる結論に飛びます。
+      </p>
+      <div class="escape">
+        最初の30投稿は <strong>反応を見ない</strong>。投稿したらアプリを閉じる。<br>
+        31投稿目から、伸びた投稿の傾向だけ静かに見る。これが折れない技術。
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <h3>Day 18〜21：LINE誘導投稿を週2本まぜる</h3>
+
+    <p>
+      フォロワーが増えてきたら、Threads → 公式LINEへの誘導を始めます。<strong>週に2本</strong>、誘導目的の投稿を入れる。<br>
+      売り込み感が出ないコツは、<em>「特典の中身を惜しみなく予告する」</em>こと。
+    </p>
+
+    <div class="callout template">
+      <span class="callout-label">📝 LINE誘導投稿テンプレ</span>
+      <pre>
+{ペルソナ}向けに、
+{特典の名前}を作りました🎁
+
+中身は、
+✅ {特典の中身1}
+✅ {特典の中身2}
+✅ {特典の中身3}
+
+いま公式LINEで
+無料プレゼント中です。
+
+▶︎{ニックネーム}のLINE
+{LINEのURL or「プロフから」と誘導}
+
+{締めの一言：あなたの○○が少しでもラクになりますように🍃}</pre>
+    </div>
+
+    <h4>誘導投稿で気をつける3つのこと</h4>
+    <ol>
+      <li><strong>「無料」ではなく「無料プレゼント中」と書く</strong>（断定がないと押しが弱い）</li>
+      <li><strong>URLは1つだけ</strong>（複数あると押されない）</li>
+      <li><strong>誘導投稿の前後にノウハウ系を挟む</strong>（売り込み感を中和）</li>
+    </ol>
+
+    <hr class="divider">
+
+    <h3>Threads運用の「やってはいけない」3つ</h3>
+    <ol>
+      <li><strong>多媒体同時スタート</strong>：インスタ・ブログ・YouTubeを並行しない。Threadsだけ集中。</li>
+      <li><strong>毎投稿で売り込み</strong>：商品リンクを毎回貼る人は速攻でブロックされる。</li>
+      <li><strong>他人の投稿の劣化コピー</strong>：型を借りるのはOK、文章丸ごとはNG。あなたの言葉で。</li>
+    </ol>
+
+    <div class="callout stuck">
+      <span class="callout-label">💭 詰まりポイント</span>
+      <h4>「家族や知り合いにバレるのが怖い」</h4>
+      <p>
+        Threadsは <em>知り合いを自動で追加しない設計</em>（Instagram連携を切れば独立運用可能）。<br>
+        本名でアカウントを作る必要もありません。ニックネーム＋アイコンだけで全然OK。
+      </p>
+      <div class="escape">
+        Threads起動 → 設定 → 「アカウントの追加と切り替え」で副業用アカを完全分離。<br>
+        Instagramのフォロワーには知られない。<em>あなただけの安全な部屋</em>を作れます。
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="callout todo-box">
+      <span class="callout-label">✅ Day 15〜21 のやることリスト</span>
+      <ul>
+        <li>Day 15：Threadsアカウント作成（副業用に新規）</li>
+        <li>Day 15：プロフィールテンプレ通りに記入・アイコン設定</li>
+        <li>Day 15：プロフィールリンクに公式LINEのURLを設定</li>
+        <li>Day 16：5つの型から1つ選んで初投稿</li>
+        <li>Day 16〜21：1日1投稿（曜日テーブル通りに）</li>
+        <li>Day 17：同テーマの発信者を50人フォロー</li>
+        <li>Day 17〜21：毎日5件のコメント実践</li>
+        <li>Day 18〜21：週2本のLINE誘導投稿を組み込む</li>
+        <li>21日終了時点で：投稿数20以上・LINE登録1人以上を目標に</li>
+      </ul>
+    </div>
+
+    <div class="callout cheer">
+      毎日10分、種をまく。<br>
+      数字が動かない日もあります。それでも、<br>
+      <strong>続けた人にしか、Day 30の景色は見えません</strong>。<br>
+      明日もこのページで会えますように。
+    </div>
+
+  </section>
+
+  </div>
+
+</body>
+</html>
