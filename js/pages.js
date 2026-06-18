@@ -11,25 +11,73 @@ const Pages = {
   // ========== Welcome Screen (first-time client) ==========
   welcome() {
     return `
-        <div class="page-container" style="min-height:80vh;display:flex;align-items:center;justify-content:center;">
-          <div class="glass-card" style="text-align:center;max-width:400px;width:100%;padding:var(--space-3xl) var(--space-xl);">
-            <div style="font-size:3rem;margin-bottom:var(--space-lg);">🥗</div>
-            <h1 style="font-size:var(--font-2xl);font-weight:800;margin-bottom:var(--space-sm);">
-              MealCoachへようこそ
-            </h1>
-            <p style="color:var(--text-secondary);margin-bottom:var(--space-2xl);font-size:var(--font-sm);">
-              食事管理を始めましょう。<br>まずはあなたのお名前を教えてください。
-            </p>
-            <div class="form-group" style="margin-bottom:var(--space-xl);">
-              <input type="text" id="client-name-input" class="form-input"
-                placeholder="お名前（例：田中 美咲）"
-                style="text-align:center;font-size:var(--font-lg);"
-                onkeydown="if(event.key==='Enter')registerClient()">
+        <div class="lp">
+          <!-- Animated aurora background -->
+          <div class="lp-aurora" aria-hidden="true"></div>
+          <div class="lp-grid" aria-hidden="true"></div>
+
+          <!-- Floating food orbs -->
+          <div class="lp-orbs" aria-hidden="true">
+            <span class="lp-orb" style="--x:8%;--y:18%;--d:0s;--s:1.4rem;">🥑</span>
+            <span class="lp-orb" style="--x:84%;--y:12%;--d:1.2s;--s:1.6rem;">🍓</span>
+            <span class="lp-orb" style="--x:16%;--y:72%;--d:2.1s;--s:1.5rem;">🥦</span>
+            <span class="lp-orb" style="--x:90%;--y:64%;--d:0.6s;--s:1.3rem;">🍋</span>
+            <span class="lp-orb" style="--x:70%;--y:84%;--d:1.8s;--s:1.5rem;">🥗</span>
+            <span class="lp-orb" style="--x:42%;--y:8%;--d:2.6s;--s:1.2rem;">🍅</span>
+          </div>
+
+          <div class="lp-content">
+            <div class="lp-badge animate-slide stagger-1">
+              <span class="lp-badge-dot"></span>
+              AI食事管理 × パーソナルコーチング
             </div>
-            <button class="btn btn-primary" style="width:100%;padding:var(--space-md) var(--space-xl);font-size:var(--font-md);"
-              onclick="registerClient()">
-              始める 🚀
-            </button>
+
+            <h1 class="lp-title animate-slide stagger-2">
+              食事を、もっと<br>
+              <span class="lp-title-grad">スマートに。</span>
+            </h1>
+
+            <p class="lp-sub animate-slide stagger-3">
+              写真を撮るだけでAIが自動記録。<br>
+              健康データを可視化し、専属コーチがあなたの<br>目標達成をサポートします。
+            </p>
+
+            <div class="lp-features animate-slide stagger-4">
+              <div class="lp-feature">
+                <span class="lp-feature-icon" style="--fc:var(--accent-green);">📷</span>
+                <div class="lp-feature-text">
+                  <strong>AIフード認識</strong>
+                  <span>写真でかんたん記録</span>
+                </div>
+              </div>
+              <div class="lp-feature">
+                <span class="lp-feature-icon" style="--fc:var(--accent-blue);">📊</span>
+                <div class="lp-feature-text">
+                  <strong>健康を可視化</strong>
+                  <span>水分・体重・体調を管理</span>
+                </div>
+              </div>
+              <div class="lp-feature">
+                <span class="lp-feature-icon" style="--fc:var(--accent-purple);">💬</span>
+                <div class="lp-feature-text">
+                  <strong>専属コーチ</strong>
+                  <span>いつでもチャットで相談</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="lp-cta animate-slide stagger-5">
+              <label class="lp-cta-label">はじめに、お名前を教えてください</label>
+              <div class="lp-cta-row">
+                <input type="text" id="client-name-input" class="lp-input"
+                  placeholder="例：田中 美咲"
+                  onkeydown="if(event.key==='Enter')registerClient()">
+                <button class="btn btn-primary lp-cta-btn" onclick="registerClient()">
+                  始める <span class="lp-cta-arrow">→</span>
+                </button>
+              </div>
+              <p class="lp-foot">登録は無料・約30秒で完了します</p>
+            </div>
           </div>
         </div>`;
   },
